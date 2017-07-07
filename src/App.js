@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import MenuItem from 'material-ui/MenuItem'
 import Drawer from 'material-ui/Drawer'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css'
 
 // Needed for onTouchTap
@@ -21,6 +22,8 @@ const LeftNav = (props) => {
   )
 }
 
+const Child = ({ match: { params: { id } } }) => <h3>ID : {`I'm in "/${id}"!`}</h3>
+
 class App extends Component {
   state = { open: false }
 
@@ -29,18 +32,21 @@ class App extends Component {
 
   render () {
     return (
-      <MuiThemeProvider>
-        <div className="App">
-          <div>
-            <RaisedButton label="Open Drawer" onTouchTap={this.handleNavToggle}/>
-            <LeftNav open={this.state.open} handleNavOpen={this.handleNavOpen}/>
+      <Router>
+        <MuiThemeProvider>
+          <div className="App">
+            <div>
+              <RaisedButton label="Open Drawer" onTouchTap={this.handleNavToggle}/>
+              <LeftNav open={this.state.open} handleNavOpen={this.handleNavOpen}/>
+            </div>
+            <div className="App-header">
+              <img src={logo} className="App-logo" alt="logo"/>
+              <h2>Welcome to React</h2>
+            </div>
+            <Route path="/:id" component={Child}/>
           </div>
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo"/>
-            <h2>Welcome to React</h2>
-          </div>
-        </div>
-      </MuiThemeProvider>
+        </MuiThemeProvider>
+      </Router>
     );
   }
 }
