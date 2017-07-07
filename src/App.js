@@ -22,9 +22,9 @@ const LeftNav = (props) => {
   const { handleNavOpen, open } = props
   const MenuItems = Routes.map(({ path, label }) => {
     return (
-      <MenuItem key={`r_${label}`} onTouchTap={() => handleNavOpen(false)}>
-        <Link to={path}>{label}</Link>
-      </MenuItem>
+      <Link key={`l_${label}`} to={path}>
+        <MenuItem onTouchTap={() => handleNavOpen(false)}>{label}</MenuItem>
+      </Link>
     )
   })
   return (
@@ -35,11 +35,7 @@ const LeftNav = (props) => {
 const Child = ({ match: { params: { id } } }) => <h3>ID : {`I'm in "/${id}"!`}</h3>
 
 class App extends Component {
-  constructor (props) {
-    super(props)
-    this.state = { open: false }
-  }
-
+  state = { open: false }
   handleNavOpen = open => this.setState({ open })
 
   render () {
@@ -49,7 +45,7 @@ class App extends Component {
           <div className="App">
             <div>
               <AppBar
-                title={<Link to="/">Title</Link>}
+                title={<Link to="/">TITLE</Link>}
                 onLeftIconButtonTouchTap={() => this.handleNavOpen(true)}
               />
               <LeftNav open={this.state.open} handleNavOpen={this.handleNavOpen}/>
