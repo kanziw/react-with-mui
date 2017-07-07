@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import RaisedButton from 'material-ui/RaisedButton'
 import MenuItem from 'material-ui/MenuItem'
 import Drawer from 'material-ui/Drawer'
+import AppBar from 'material-ui/AppBar'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import './App.css'
@@ -21,7 +21,11 @@ const Routes = [
 const LeftNav = (props) => {
   const { handleNavOpen, open } = props
   const MenuItems = Routes.map(({ path, label }) => {
-    return <MenuItem onTouchTap={() => handleNavOpen(false)}><Link to={path}>{label}</Link></MenuItem>
+    return (
+      <MenuItem key={`r_${label}`} onTouchTap={() => handleNavOpen(false)}>
+        <Link to={path}>{label}</Link>
+      </MenuItem>
+    )
   })
   return (
     <Drawer open={open} docked={false} onRequestChange={handleNavOpen}> {MenuItems} </Drawer>
@@ -31,9 +35,11 @@ const LeftNav = (props) => {
 const Child = ({ match: { params: { id } } }) => <h3>ID : {`I'm in "/${id}"!`}</h3>
 
 class App extends Component {
-  state = { open: false }
+  constructor (props) {
+    super(props)
+    this.state = { open: false }
+  }
 
-  handleNavToggle = () => this.setState({ open: !this.state.open })
   handleNavOpen = open => this.setState({ open })
 
   render () {
@@ -42,7 +48,10 @@ class App extends Component {
         <MuiThemeProvider>
           <div className="App">
             <div>
-              <RaisedButton label="Open Drawer" onTouchTap={this.handleNavToggle}/>
+              <AppBar
+                title={<Link to="/">Title</Link>}
+                onLeftIconButtonTouchTap={() => this.handleNavOpen(true)}
+              />
               <LeftNav open={this.state.open} handleNavOpen={this.handleNavOpen}/>
             </div>
             <div className="App-header">
