@@ -5,20 +5,26 @@ import RaisedButton from 'material-ui/RaisedButton'
 import MenuItem from 'material-ui/MenuItem'
 import Drawer from 'material-ui/Drawer'
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import './App.css'
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+const Routes = [
+  { path: '/users', label: '유저 검색' },
+  { path: '/tags', label: '태그 검색' },
+  { path: '/links', label: 'Links' },
+]
+
 const LeftNav = (props) => {
   const { handleNavOpen, open } = props
+  const MenuItems = Routes.map(({ path, label }) => {
+    return <MenuItem onTouchTap={() => handleNavOpen(false)}><Link to={path}>{label}</Link></MenuItem>
+  })
   return (
-    <Drawer open={open} docked={false} onRequestChange={handleNavOpen}>
-      <MenuItem onTouchTap={() => handleNavOpen(false)}>Menu Item</MenuItem>
-      <MenuItem onTouchTap={() => handleNavOpen(false)}>Menu Item 2</MenuItem>
-    </Drawer>
+    <Drawer open={open} docked={false} onRequestChange={handleNavOpen}> {MenuItems} </Drawer>
   )
 }
 
